@@ -7,6 +7,9 @@ const PORT = process.env.PORT || 3001;
 //To instantiate the server
 const app = express();
 
+//Make certain files readily available. instruct the server to make these files static resources. 
+app.use(express.static('public'));
+
 // parse incoming string or array data
 // app.use mounts a function middleware
 // It takes incoming POST data and converts it to key/value pairings that can be accessed in the req.body 
@@ -124,6 +127,23 @@ app.post('/api/animals', (req, res) => {
     }
     return true;
   }
+  //to create a route to serve index.html
+  app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, './public/index.html'));
+  });
+  //to create a route to serve animals.html
+  app.get('/animals', (req, res) => {
+    res.sendFile(path.join(__dirname, './public/animals.html'));
+  });
+  //to create a route to serve zookeepers.html
+  app.get('/zookeepers', (req, res) => {
+    res.sendFile(path.join(__dirname, './public/zookeepers.html'));
+  });
+ //to create a wildcard route to serve when there's no route that matches
+ //the * route should always come last.
+   app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, './public/index.html'));
+  });  
 //To make our server listen
 app.listen(PORT, () =>{
     console.log(`API server now on port ${PORT}!`);
